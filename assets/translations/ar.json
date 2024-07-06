@@ -1,0 +1,16 @@
+{
+  "name": "تطبيق المهام",
+  "task": "مهمة",
+  "add_task": "أضف مهمة",
+  "delete_task": "احذف المهمة",
+  "complete_task": "أكمل المهمة",
+  "description": "الوصف",
+  "startDate": "تاريخ البدء",
+  "endDate": "تاريخ الانتهاء",
+  "submit": "إرسال",
+  "status": "الحالة",
+  "title" : "العنوان",
+  "fieldRequired": "هذا الحقل مطلوب"
+
+
+}

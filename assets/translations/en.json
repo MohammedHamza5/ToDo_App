@@ -1,0 +1,14 @@
+{
+  "name": "To-Do App",
+  "task": "Task",
+  "add_task": "Add Task",
+  "delete_task": "Delete Task",
+  "complete_task": "Complete Task",
+  "description": "Description",
+  "startDate": "Start Date",
+  "endDate" : "End Date",
+  "submit": "Submit",
+  "status": "Status",
+  "title" : "Title",
+  "fieldRequired": "Field Required"
+}
