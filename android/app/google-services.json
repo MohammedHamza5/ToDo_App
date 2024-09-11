@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "454115433875",
+    "project_id": "to-do-app-23df2",
+    "storage_bucket": "to-do-app-23df2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454115433875:android:f7fdf9c19f549c00c3dc66",
+        "android_client_info": {
+          "package_name": "com.eraasorf.to_do_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzlBwohtQByU83Q8hbZHsC0EkbMlxFes0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

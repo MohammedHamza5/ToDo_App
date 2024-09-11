@@ -14,20 +14,20 @@ ThemeData lightTheme = ThemeData(
 
   ),
   buttonTheme: ButtonThemeData(
-    buttonColor: AppColors.purpleA,
-    textTheme: ButtonTextTheme.primary,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12.r)
-    )
+      buttonColor: AppColors.purpleA,
+      textTheme: ButtonTextTheme.primary,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r)
+      )
   ),
 
   elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(
-      backgroundColor: AppColors.purpleA,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.r)
+      style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.purpleA,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.r)
+          )
       )
-    )
   ),
   textTheme: TextTheme(
     bodySmall: TextStyle(

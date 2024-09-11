@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,9 +13,12 @@ class AddTaskWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TaskCubit(),
-      child: BlocBuilder<TaskCubit, TaskState>(builder: (context, state) {
+    return BlocProvider.value(
+      // create: (context) => TaskCubit(),
+      value: TaskCubit.get(context)..addTaskToAPI(),
+      child: BlocBuilder<TaskCubit, TaskState>(buildWhen: (previous, current) {
+        return current is PickImageState;
+      }, builder: (context, state) {
         return SafeArea(
           child: Form(
             key: TaskCubit.get(context).formState,
@@ -30,8 +34,8 @@ class AddTaskWidget extends StatelessWidget {
                 Text(
                   LocaleKeys.add_task.tr(),
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
                 TextFormField(
                   controller: TaskCubit.get(context).titleController,
@@ -72,14 +76,15 @@ class AddTaskWidget extends StatelessWidget {
                   ),
                   onTap: () {
                     showDatePicker(
-                      context: context,firstDate: DateTime.now(),
+                      context: context,
+                      firstDate: DateTime.now(),
                       lastDate: DateTime(DateTime.now().year + 1),
                       initialEntryMode: DatePickerEntryMode.calendarOnly,
                     ).then(
-                          (value) {
+                      (value) {
                         if (value != null) {
                           TaskCubit.get(context).startDateController.text =
-                              DateFormat('dd-MM-yyyy').format(value);
+                              DateFormat('yyyy-MM-dd').format(value);
                         }
                       },
                     );
@@ -90,14 +95,14 @@ class AddTaskWidget extends StatelessWidget {
                 ),
                 TextFormField(
                   controller: TaskCubit.get(context).endDateController,
+                  keyboardType: TextInputType.none,
+                  readOnly: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return LocaleKeys.fieldRequired.tr();
                     }
                     return null;
                   },
-                  keyboardType: TextInputType.none,
-                  readOnly: true,
                   decoration: InputDecoration(
                     labelText: LocaleKeys.endDate.tr(),
                   ),
@@ -108,10 +113,10 @@ class AddTaskWidget extends StatelessWidget {
                       lastDate: DateTime(DateTime.now().year + 1),
                       initialEntryMode: DatePickerEntryMode.calendarOnly,
                     ).then(
-                          (value) {
+                      (value) {
                         if (value != null) {
                           TaskCubit.get(context).endDateController.text =
-                              DateFormat('dd-MM-yyyy').format(value);
+                              DateFormat('yyyy-MM-dd').format(value);
                         }
                       },
                     );
@@ -120,15 +125,57 @@ class AddTaskWidget extends StatelessWidget {
                 SizedBox(
                   height: 20.h,
                 ),
+                Visibility(
+                  visible: TaskCubit.get(context).image == null,
+                  replacement: Image.file(
+                    File(
+                      TaskCubit.get(context).image?.path ?? '',
+                    ),
+                    height: 200.h,
+                    fit: BoxFit.cover,
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      TaskCubit.get(context).pickImage();
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.image_outlined),
+                        SizedBox(
+                          height: 6.h,
+                        ),
+                        const Text(LocaleKeys.upload_image),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 8.h,
+                ),
+                BlocBuilder<TaskCubit, TaskState>(
+                  buildWhen: (previous, current) {
+                    return current is AddTaskLoading ||
+                        current is AddTaskSuccess ||
+                        current is AddTaskFailed;
+                  },
+                  builder: (context, state) {
+                    return Visibility(
+                      visible: state is AddTaskLoading,
+                      child: const LinearProgressIndicator(),
+                    );
+                  },
+                ),
                 ElevatedButton(
                   onPressed: () {
-                    TaskCubit.get(context).addTask();
                     if (TaskCubit.get(context)
                         .formState
                         .currentState!
                         .validate()) {
-                      TaskCubit.get(context).addTask();
-                      AppNavigation.pop(context);
+                      TaskCubit.get(context).addTaskToAPI().then((value) {
+                        AppNavigation.pop(context);
+                        TaskCubit.get(context).uploadImageToFireStore();
+                      });
                     } else {
                       return;
                     }
@@ -136,14 +183,14 @@ class AddTaskWidget extends StatelessWidget {
                   child: Text(
                     LocaleKeys.submit.tr(),
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.white,
-                    ),
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.white,
+                        ),
                   ),
                 ),
                 SizedBox(
                   height: 16.h,
-                )
+                ),
               ],
             ),
           ),

@@ -15,16 +15,29 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   bool isLoaded = false;
+  Widget? navigateTo;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 4)).then((_) {
-      setState(() {
-        isLoaded = true;
-      });
-      AppNavigation.pushAndRemove(context,  const HomeScreen());
+    _initializeSplash();
+  }
+
+  Future<void> _initializeSplash() async {
+    await Future.delayed(const Duration(seconds: 4));
+
+    if (!mounted) return;
+    setState(() {
+      navigateTo = const HomeScreen();
     });
+    if (navigateTo != null) {
+      AppNavigation.pushAndRemove(context, navigateTo!);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -32,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: SplashScreenView(
         navigateWhere: isLoaded,
-        navigateRoute: isLoaded ? const HomeScreen() : Container(),
+        navigateRoute: navigateTo ?? Container(),
         linearGradient: const LinearGradient(
           colors: [
             AppColors.blue12,

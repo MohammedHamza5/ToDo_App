@@ -50,5 +50,7 @@
     	<string>en</string>
     	<string>ar</string>
     </array>
+    <key>NSPhotoLibraryUsageDescription</key>
+    	<string>$(PRODUCT_NAME) would like access to photo library to upload image of your tasks </string>
 </dict>
 </plist>

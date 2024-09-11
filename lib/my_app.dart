@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:to_do_app/view/screens/splash_screen/splash_screen.dart';
+import 'package:to_do_app/view_model/cubits/auth/auth_cubit.dart';
+import 'package:to_do_app/view_model/cubits/task/task_cubit.dart';
 import 'package:to_do_app/view_model/cubits/theme/theme_cubit.dart';
 import 'package:to_do_app/view_model/themes/dark_theme.dart';
 import 'package:to_do_app/view_model/themes/light_theme.dart';
@@ -18,24 +20,31 @@ class ToDo extends StatelessWidget {
       splitScreenMode: true,
       builder: (_, child) {
         return BlocProvider(
-          create: (context) => ThemeCubit(),
-          child: BlocBuilder<ThemeCubit, ThemeState>(
-            builder: (context, state) {
-              return MaterialApp(
-                theme: lightTheme,
-                darkTheme: darkTheme,
-                themeMode: ThemeCubit.get(context).isDark
-                    ? ThemeMode.dark
-                    : ThemeMode.light,
+          create: (context) => AuthCubit(),
+          child: BlocProvider(
+            create: (context) => TaskCubit(),
+            child: BlocProvider(
+              create: (context) => ThemeCubit(),
+              child: BlocBuilder<ThemeCubit, ThemeState>(
+                builder: (context, state) {
+                  return MaterialApp(
+                    theme: lightTheme,
+                    darkTheme: darkTheme,
+                    themeMode: ThemeCubit
+                        .get(context)
+                        .isDark
+                        ? ThemeMode.dark
+                        : ThemeMode.light,
 
-                localizationsDelegates: context.localizationDelegates,
-                supportedLocales: context.supportedLocales,
-                locale: context.locale,
-                debugShowCheckedModeBanner: false,
-                home: child,
-              );
-
-            },
+                    localizationsDelegates: context.localizationDelegates,
+                    supportedLocales: context.supportedLocales,
+                    locale: context.locale,
+                    debugShowCheckedModeBanner: false,
+                    home: child,
+                  );
+                },
+              ),
+            ),
           ),
         );
       },

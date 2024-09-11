@@ -5,4 +5,5 @@ ThemeData darkTheme = ThemeData(
     appBarTheme: const AppBarTheme(
       color: AppColors.purpleA,
     ),
-    scaffoldBackgroundColor: AppColors.black54);
+    scaffoldBackgroundColor: AppColors.black54
+);
